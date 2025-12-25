@@ -1,6 +1,6 @@
 * {
-    margin: 0;
-    padding: 0;
+    margin: 5;
+    padding: 5;
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
@@ -193,3 +193,4 @@ footer ion-icon {
         max-width: 100%;
     }
 }
+
