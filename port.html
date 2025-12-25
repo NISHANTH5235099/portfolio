@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nishanth | Portfolio</title>
+
+    <!-- Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <link rel="stylesheet" href="port.css">
+</head>
+<body>
+
+<header class="hero">
+    <button class="theme-toggle" onclick="toggleTheme()">
+        🌙
+    </button>
+
+    <h1 class="fade-in">Nishanth Tirumalasetty</h1>
+    <p class="fade-in delay-1">B.Tech Student | Web Development Enthusiast</p>
+
+    <div class="hero-buttons fade-in delay-2">
+        <a href="resume.pdf" class="btn" download>Download Resume</a>
+        <a href="#projects" class="btn outline">View Projects</a>
+    </div>
+
+    <nav class="fade-in delay-3">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<section id="about" class="section slide-up">
+    <h2>About Me</h2>
+    <p>
+        I am a B.Tech student with a strong interest in programming,
+        web development, and building real-world applications.
+    </p>
+</section>
+
+<section id="skills" class="section bg-light slide-up">
+    <h2>Technical Skills</h2>
+    <div class="skills-grid">
+        <div>Python</div>
+        <div>Tkinter</div>
+        <div>HTML</div>
+        <div>CSS</div>
+        <div>GitHub</div>
+        <div>JavaScript</div>
+    </div>
+</section>
+
+<section id="projects" class="section slide-up">
+    <h2>Projects</h2>
+
+    <div class="project-card">
+        <h3>Personal Portfolio Website</h3>
+        <p>
+            Responsive personal portfolio built using HTML and CSS.
+        </p>
+        <p><strong>Tech Stack:</strong> HTML, CSS</p>
+    </div>
+
+    <div class="project-card">
+        <h3>To-Do Application (Python Tkinter)</h3>
+        <p>
+            Desktop-based To-Do application with task management,
+            completion tracking, search, and JSON persistence.
+        </p>
+        <p><strong>Tech Stack:</strong> Python, Tkinter, JSON</p>
+
+        <div class="project-links">
+            <a href="https://github.com/NISHANTH5235099/Todo-app-tkinter" target="_blank" class="project-link">
+                View on GitHub
+            </a>
+        </div>
+
+        <div class="project-images">
+            <img src="screenshots/home.png" alt="Home">
+            <img src="screenshots/addtask.png" alt="Add Task">
+            <img src="screenshots/completed.png" alt="Completed Task">
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="section bg-light slide-up">
+    <h2>Contact</h2>
+    <form class="contact-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="4"></textarea>
+        <button type="submit">Send</button>
+    </form>
+</section>
+
+<footer>
+    <p>Connect with me</p>
+    <a href="https://www.linkedin.com/in/nishanth-tirumalasetty-a1354330b/" target="_blank">
+        <ion-icon name="logo-linkedin"></ion-icon>
+    </a>
+    <a href="https://www.instagram.com/______nishu____7" target="_blank">
+        <ion-icon name="logo-instagram"></ion-icon>
+    </a>
+</footer>
+
+<script>
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
