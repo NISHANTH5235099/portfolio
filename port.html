@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tirumalasetty Nishanth - B.Tech Computer Science Student & Developer Portfolio. Web application showcase including Full-Stack Expense Tracker, Taskora, and others.">
+    <title>Tirumalasetty Nishanth | Portfolio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <link rel="stylesheet" href="port.css">
+</head>
+<body class="dark"> <!-- Defaulting to dark mode for premium look -->
+
+    <!-- Custom Cursor Glow Effect -->
+    <div class="cursor-glow"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">TN<span>.</span></a>
+            
+            <nav class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#certifications" class="nav-link">Certifications</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="nav-actions">
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <ion-icon name="moon-outline" class="moon-icon"></ion-icon>
+                    <ion-icon name="sunny-outline" class="sun-icon"></ion-icon>
+                </button>
+                <a href="resume.pdf" class="btn btn-sm">Resume</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-sec">
+        <div class="hero-background">
+            <div class="gradient-sphere sphere-1"></div>
+            <div class="gradient-sphere sphere-2"></div>
+        </div>
+        <div class="hero-content container">
+            <div class="hero-text-card reveal">
+                <span class="greeting-badge">Welcome to my space</span>
+                <h1 class="hero-title">Tirumalasetty <br><span class="gradient-text">Nishanth</span></h1>
+                <h2 class="hero-subtitle">
+                    I'm a <span id="typewriter" class="typewriter"></span><span class="cursor">|</span>
+                </h2>
+                <p class="hero-desc">
+                    A passionate B.Tech Computer Science student specializing in building full-stack web applications, secure REST APIs, and clean software solutions.
+                </p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">
+                        <span>View Projects</span>
+                        <ion-icon name="arrow-forward-outline"></ion-icon>
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span class="mouse">
+                <span class="wheel"></span>
+            </span>
+            <span class="arrow"></span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">01. Discovery</span>
+            <h2 class="section-title">About Me</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="about-grid reveal">
+            <div class="about-info card">
+                <h3>Who I Am</h3>
+                <p>
+                    I am currently pursuing my <strong>B.Tech in Computer Science and Engineering</strong> at Velagapudi Ramakrishna Siddhartha Engineering College. I have a deep curiosity for designing full-stack applications, managing relational and non-relational database services, and writing efficient system scripts.
+                </p>
+                <p>
+                    My workflow emphasizes standard design methodologies, responsive web development practices, and modern state-management frameworks. I am highly motivated to engineer secure APIs and persistent databases to solve real-world problems.
+                </p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-num gradient-text">8.52</span>
+                        <span class="stat-label">B.Tech CGPA</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num gradient-text">3+</span>
+                        <span class="stat-label">Core Projects</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num gradient-text">7+</span>
+                        <span class="stat-label">Certifications</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="about-quickfacts card">
+                <h3>Quick Facts</h3>
+                <ul class="facts-list">
+                    <li>
+                        <ion-icon name="school-outline"></ion-icon>
+                        <div>
+                            <strong>College Education</strong>
+                            <span>B.Tech in CSE (2024 - 2028)</span>
+                        </div>
+                    </li>
+                    <li>
+                        <ion-icon name="location-outline"></ion-icon>
+                        <div>
+                            <strong>Location</strong>
+                            <span>Vijayawada, Andhra Pradesh</span>
+                        </div>
+                    </li>
+                    <li>
+                        <ion-icon name="mail-unread-outline"></ion-icon>
+                        <div>
+                            <strong>Email</strong>
+                            <span>nishanthtirumalasetty@gmail.com</span>
+                        </div>
+                    </li>
+                    <li>
+                        <ion-icon name="code-slash-outline"></ion-icon>
+                        <div>
+                            <strong>Interests</strong>
+                            <span>Fullstack Web, Database Mgmt, APIs</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">02. Academics</span>
+            <h2 class="section-title">Education</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="education-timeline reveal">
+            <!-- Timeline Item 1 -->
+            <div class="timeline-item card">
+                <div class="timeline-meta">
+                    <span class="timeline-period">2024 - 2028</span>
+                    <span class="timeline-badge">CGPA - 8.52</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>Velagapudi Ramakrishna Siddhartha Engineering College</h3>
+                    <h4>B.Tech - Computer Science and Engineering</h4>
+                    <p class="timeline-loc">Vijayawada, Andhra Pradesh</p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="timeline-item card">
+                <div class="timeline-meta">
+                    <span class="timeline-period">2022 - 2024</span>
+                    <span class="timeline-badge">Percentage - 94.5%</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>Sri Chaitanya Junior College</h3>
+                    <h4>Intermediate (11th and 12th) - PCM</h4>
+                    <p class="timeline-loc">Vijayawada, Andhra Pradesh</p>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="timeline-item card">
+                <div class="timeline-meta">
+                    <span class="timeline-period">2022</span>
+                    <span class="timeline-badge">Percentage - 93.33%</span>
+                </div>
+                <div class="timeline-content">
+                    <h3>Narayana E-Techno School</h3>
+                    <h4>10th Class - State Board</h4>
+                    <p class="timeline-loc">Kandukur, Andhra Pradesh</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">03. Capability</span>
+            <h2 class="section-title">Technical Expertise</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="skills-container reveal">
+            <!-- Languages -->
+            <div class="skills-category-card card">
+                <div class="card-icon">
+                    <ion-icon name="code-working-outline"></ion-icon>
+                </div>
+                <h3>Languages</h3>
+                <p>Coding and database query languages used for application logic.</p>
+                <div class="skills-badge-list">
+                    <span class="skill-badge"><ion-icon name="logo-python"></ion-icon> Python</span>
+                    <span class="skill-badge">Java</span>
+                    <span class="skill-badge">C</span>
+                    <span class="skill-badge"><ion-icon name="logo-javascript"></ion-icon> JavaScript</span>
+                    <span class="skill-badge"><ion-icon name="logo-html5"></ion-icon> HTML5</span>
+                    <span class="skill-badge"><ion-icon name="logo-css3"></ion-icon> CSS3</span>
+                    <span class="skill-badge">SQL</span>
+                </div>
+            </div>
+
+            <!-- Technologies & Frameworks -->
+            <div class="skills-category-card card">
+                <div class="card-icon">
+                    <ion-icon name="layers-outline"></ion-icon>
+                </div>
+                <h3>Frameworks & Technologies</h3>
+                <p>Client-side rendering, backend routing, state management, and cloud databases.</p>
+                <div class="skills-badge-list">
+                    <span class="skill-badge"><ion-icon name="logo-react"></ion-icon> ReactJS</span>
+                    <span class="skill-badge">Redux</span>
+                    <span class="skill-badge">NextJS</span>
+                    <span class="skill-badge"><ion-icon name="logo-nodejs"></ion-icon> NodeJS</span>
+                    <span class="skill-badge">ExpressJS</span>
+                    <span class="skill-badge">MongoDB Atlas</span>
+                    <span class="skill-badge"><ion-icon name="logo-github"></ion-icon> GitHub</span>
+                    <span class="skill-badge"><ion-icon name="git-merge-outline"></ion-icon> Git</span>
+                    <span class="skill-badge">Linux</span>
+                </div>
+            </div>
+
+            <!-- Coursework & Developer Tools -->
+            <div class="skills-category-card card">
+                <div class="card-icon">
+                    <ion-icon name="build-outline"></ion-icon>
+                </div>
+                <h3>Tools & Coursework</h3>
+                <p>Foundational computer science topics and software engineering IDEs.</p>
+                <div class="skills-badge-list">
+                    <span class="skill-badge">Data Structures & Algorithms (DSA)</span>
+                    <span class="skill-badge">Database Management System (DBMS)</span>
+                    <span class="skill-badge">Operating Systems</span>
+                    <span class="skill-badge">Object-Oriented Programming (OOP)</span>
+                    <span class="skill-badge">Responsive Web Development</span>
+                    <span class="skill-badge"><ion-icon name="terminal-outline"></ion-icon> VS Code</span>
+                    <span class="skill-badge"><ion-icon name="logo-android"></ion-icon> Android Studio</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">04. Portfolio</span>
+            <h2 class="section-title">Projects Showcase</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="projects-filter reveal">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="web">Web Development</button>
+            <button class="filter-btn" data-filter="others">Others</button>
+        </div>
+
+        <div class="projects-grid reveal">
+            <!-- Project 1 -->
+            <div class="project-card-v2 card" data-category="web">
+                <div class="project-card-header">
+                    <ion-icon name="folder-open-outline" class="folder-icon"></ion-icon>
+                    <div class="project-links">
+                        <a href="#" aria-label="GitHub Repository"><ion-icon name="logo-github"></ion-icon></a>
+                        <a href="#" aria-label="Live Demo"><ion-icon name="open-outline"></ion-icon></a>
+                    </div>
+                </div>
+                <span class="project-year">2026</span>
+                <h3>Full-Stack Expense Tracker</h3>
+                <p class="project-card-desc">
+                    Developed a responsive Full-Stack Expense Tracker with glassmorphic elements and dark/light theme options. Features a dynamic Monthly Budget tracking system with real-time limit percentages and color-coded status rules. Engineered a secure RESTful API using JWT for user sessions, hosted on MongoDB Atlas, with Render servers and Netlify CDNs.
+                </p>
+                <div class="project-card-tech">
+                    <span>NodeJS</span>
+                    <span>ExpressJS</span>
+                    <span>MongoDB</span>
+                    <span>JavaScript</span>
+                    <span>CSS3</span>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card-v2 card" data-category="web">
+                <div class="project-card-header">
+                    <ion-icon name="folder-open-outline" class="folder-icon"></ion-icon>
+                    <div class="project-links">
+                        <a href="#" aria-label="GitHub Repository"><ion-icon name="logo-github"></ion-icon></a>
+                        <a href="#" aria-label="Live Demo"><ion-icon name="open-outline"></ion-icon></a>
+                    </div>
+                </div>
+                <span class="project-year">2026</span>
+                <h3>Taskora – To-Do Web Application</h3>
+                <p class="project-card-desc">
+                    Created a modern To-Do app featuring task creation, deletion, completion counters, and custom search filtering. Utilized LocalStorage to maintain persistent task states across sessions, improving client retention data.
+                </p>
+                <div class="project-card-tech">
+                    <span>HTML5</span>
+                    <span>CSS3</span>
+                    <span>JavaScript</span>
+                    <span>LocalStorage</span>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card-v2 card" data-category="web">
+                <div class="project-card-header">
+                    <ion-icon name="folder-open-outline" class="folder-icon"></ion-icon>
+                    <div class="project-links">
+                        <a href="#" aria-label="Live Demo"><ion-icon name="open-outline"></ion-icon></a>
+                    </div>
+                </div>
+                <span class="project-year">2026</span>
+                <h3>Personal Portfolio Website</h3>
+                <p class="project-card-desc">
+                    Designed a mobile-responsive portfolio site using CSS Flexbox/Grid to highlight academic credentials, certifications, and technical projects.
+                </p>
+                <div class="project-card-tech">
+                    <span>HTML5</span>
+                    <span>CSS3</span>
+                    <span>JavaScript</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="certifications-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">05. Credentials</span>
+            <h2 class="section-title">Certifications</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="certifications-grid reveal">
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Nov 2025</span>
+                </div>
+                <h3>Programming in Java</h3>
+                <p class="cert-issuer">Swayam NPTEL</p>
+            </div>
+
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Nov 2025</span>
+                </div>
+                <h3>Foundations of R Software</h3>
+                <p class="cert-issuer">Swayam NPTEL</p>
+            </div>
+
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Oct 2025</span>
+                </div>
+                <h3>Linux Essentials</h3>
+                <p class="cert-issuer">Cisco</p>
+            </div>
+
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Jul 2025</span>
+                </div>
+                <h3>Python (Basic)</h3>
+                <p class="cert-issuer">HackerRank Certified</p>
+            </div>
+
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Nov 2024</span>
+                </div>
+                <h3>Python Essentials 2</h3>
+                <p class="cert-issuer">Cisco</p>
+            </div>
+
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Oct 2024</span>
+                </div>
+                <h3>Python Essentials 1</h3>
+                <p class="cert-issuer">Cisco</p>
+            </div>
+
+            <div class="cert-card card">
+                <div class="cert-header">
+                    <ion-icon name="ribbon-outline" class="cert-icon"></ion-icon>
+                    <span class="cert-date">Oct 2024</span>
+                </div>
+                <h3>Digital Awareness</h3>
+                <p class="cert-issuer">Cisco</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extracurriculars Section -->
+    <section class="extracurricular-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">06. Activities</span>
+            <h2 class="section-title">Extracurriculars</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="extra-container reveal">
+            <div class="extra-card card">
+                <div class="extra-icon">
+                    <ion-icon name="american-football-outline"></ion-icon>
+                </div>
+                <h3>College Sports Club</h3>
+                <p>Member — Participated actively in athletic events, promoting team coordination, discipline, and healthy sportsmanship.</p>
+            </div>
+
+            <div class="extra-card card">
+                <div class="extra-icon">
+                    <ion-icon name="earth-outline"></ion-icon>
+                </div>
+                <h3>Echo Club</h3>
+                <p>Member — Engaged in environmental awareness initiatives, tree-planting drives, and modern sustainability campaigns.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-sec container section-padding">
+        <div class="section-header reveal">
+            <span class="section-tag">07. Connection</span>
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="contact-wrapper reveal">
+            <div class="contact-card card">
+                <h3 class="contact-heading">Send A Message</h3>
+                <p class="contact-sub">Have a project, a question, or just want to say hi? Drop me a message and I'll get back to you as soon as possible.</p>
+                
+                <form class="contact-form-v2" id="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" placeholder="Hey Nishanth, let's connect!" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <span>Send Message</span>
+                        <ion-icon name="paper-plane-outline"></ion-icon>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container container">
+            <div class="footer-brand">
+                <a href="#" class="logo">TN<span>.</span></a>
+                <p>Building ideas into premium digital realities.</p>
+            </div>
+            
+            <div class="footer-socials">
+                <a href="mailto:nishanthtirumalasetty@gmail.com" title="Email">
+                    <ion-icon name="mail-outline"></ion-icon>
+                </a>
+                <a href="tel:+918309438320" title="Phone">
+                    <ion-icon name="call-outline"></ion-icon>
+                </a>
+                <a href="https://www.linkedin.com/in/nishanth-tirumalasetty-a1354330b/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                    <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+                <a href="https://github.com/NISHANTH5235099" target="_blank" rel="noopener noreferrer" title="GitHub">
+                    <ion-icon name="logo-github"></ion-icon>
+                </a>
+                <a href="https://leetcode.com/NISHANTH5235099" target="_blank" rel="noopener noreferrer" title="Leetcode">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-9.777 9.778a3.75 3.75 0 0 0 0 5.304l5.694 5.694a3.75 3.75 0 0 0 5.302 0l9.778-9.778A1.377 1.377 0 0 0 24 10.483V1.376A1.378 1.378 0 0 0 22.624 0h-9.141zm.562 2.752h7.203v7.204l-9.08 9.08a1.25 1.25 0 0 1-1.768 0L4.71 13.342a1.25 1.25 0 0 1 0-1.768l9.335-9.336a1.25 1.25 0 0 1 .868-.372z"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tirumalasetty Nishanth. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <ion-icon name="checkmark-circle" class="toast-icon"></ion-icon>
+            <span class="toast-message">Message sent successfully!</span>
+        </div>
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Theme Management
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+            } else if (savedTheme === 'dark') {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+            } else {
+                if (systemPrefersDark) {
+                    document.body.classList.add('dark');
+                } else {
+                    document.body.classList.remove('dark');
+                    document.body.classList.add('light');
+                }
+            }
+        }
+        
+        function toggleTheme() {
+            if (document.body.classList.contains('dark')) {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                document.body.classList.remove('light');
+                document.body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        initTheme();
+
+        // Cursor Glow
+        const cursorGlow = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        // Auto Typewriter Effect
+        const words = ["B.Tech CSE Student", "Fullstack Developer", "REST API Engineer", "Problem Solver"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 100;
+        const erasingSpeed = 50;
+        const delayBetweenWords = 2000;
+        const typewriterElement = document.getElementById('typewriter');
+
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                isDeleting = true;
+                setTimeout(type, delayBetweenWords);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                setTimeout(type, 500);
+            } else {
+                setTimeout(type, isDeleting ? erasingSpeed : typingSpeed);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(type, 1000);
+        });
+
+        // Project Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card-v2');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if (filterValue === 'all' || cardCategory === filterValue) {
+                        card.style.display = 'flex';
+                        card.style.opacity = '0';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Intersection Observer for Slide-Up Scroll Animations
+        const reveals = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        reveals.forEach(el => revealObserver.observe(el));
+
+        // Toast Notification & Form Handling
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const messageInput = document.getElementById('message');
+            
+            if (nameInput.value && emailInput.value && messageInput.value) {
+                nameInput.value = '';
+                emailInput.value = '';
+                messageInput.value = '';
+                
+                const toast = document.getElementById('toast');
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4000);
+            }
+        }
+    </script>
+</body>
+</html>
