@@ -877,6 +877,147 @@ body:not(.dark) .timeline-badge {
     }
 }
 
+/* ===== Internship Timeline ===== */
+.internship-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.intern-card {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 30px;
+    align-items: center;
+}
+
+.intern-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.intern-period {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    background-color: rgba(var(--primary-rgb), 0.08);
+    padding: 4px 12px;
+    border-radius: 30px;
+}
+
+.intern-badge {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    background-color: rgba(52, 211, 153, 0.08);
+    padding: 4px 12px;
+    border-radius: 30px;
+}
+
+body:not(.dark) .intern-badge {
+    color: var(--accent);
+    background-color: rgba(16, 185, 129, 0.08);
+}
+
+.intern-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.intern-title-row h3 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.intern-link {
+    color: var(--text-muted);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition-fast);
+}
+
+.intern-link:hover {
+    color: var(--primary);
+}
+
+.intern-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.intern-highlights {
+    list-style-type: disc;
+    margin-left: 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* ===== Achievements Section ===== */
+.achievements-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.achieve-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.achieve-icon {
+    font-size: 28px;
+    color: var(--accent);
+    background-color: rgba(52, 211, 153, 0.08);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+body:not(.dark) .achieve-icon {
+    background-color: rgba(16, 185, 129, 0.08);
+}
+
+.achieve-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.achieve-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Responsive updates */
+@media (max-width: 768px) {
+    .intern-card {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        align-items: flex-start;
+    }
+    
+    .intern-meta {
+        flex-direction: row;
+        gap: 12px;
+    }
+}
+
 /* ===== Contact Section ===== */
 .contact-wrapper {
     display: flex;
