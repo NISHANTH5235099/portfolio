@@ -1288,3 +1288,311 @@ footer {
         justify-content: center;
     }
 }
+
+/* ==========================================
+   ADDED PORTFOLIO INTERACTIVITY STYLES
+   ========================================== */
+
+/* ===== Hero Particles Canvas ===== */
+#hero-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+/* Active Nav Link (Scrollspy) */
+.nav-link.active {
+    color: var(--text-color) !important;
+}
+.nav-link.active::after {
+    width: 100% !important;
+}
+
+/* Make Project Cards Interactive */
+.project-card-v2 {
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast) !important;
+}
+.project-card-v2:hover {
+    transform: translateY(-5px);
+    border-color: rgba(var(--primary-rgb), 0.2);
+    box-shadow: var(--card-shadow);
+}
+
+/* ===== Back to Top Button ===== */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    box-shadow: var(--card-shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.8);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
+.back-to-top:hover {
+    color: var(--primary);
+    transform: scale(1.08) translateY(-2px);
+    border-color: rgba(var(--primary-rgb), 0.3);
+}
+.back-to-top-icon {
+    font-size: 20px;
+    position: absolute;
+    z-index: 2;
+}
+.progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+    z-index: 1;
+}
+.progress-ring-circle {
+    stroke: var(--primary);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+/* ===== Project Details Modal ===== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 15, 25, 0.65);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+}
+.modal-wrapper {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    border-radius: 20px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 2;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px);
+}
+.modal.show .modal-wrapper {
+    transform: translateY(0) scale(1);
+}
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--card-border);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 20px;
+    z-index: 10;
+    transition: all var(--transition-fast);
+}
+.modal-close:hover {
+    background: var(--text-muted);
+    color: var(--bg-color);
+    transform: rotate(90deg);
+}
+.modal-content {
+    padding: 40px;
+}
+.modal-project-header {
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 20px;
+}
+.modal-project-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.modal-project-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+.modal-project-body {
+    display: grid;
+    grid-template-columns: 3.5fr 2.5fr;
+    gap: 32px;
+}
+@media (max-width: 768px) {
+    .modal-project-body {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .modal-content {
+        padding: 30px 20px 20px;
+    }
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+    }
+}
+.modal-project-desc h3,
+.modal-project-features h3,
+.modal-project-sidebar h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--text-color);
+}
+.modal-project-desc p {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+.modal-project-features ul {
+    list-style: none;
+}
+.modal-project-features li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+.modal-project-features li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+.modal-project-sidebar {
+    background: rgba(var(--primary-rgb), 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 20px;
+}
+.modal-tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+.modal-tech-badge {
+    font-size: 12px;
+    background: var(--card-border);
+    color: var(--text-color);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+}
+.modal-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.modal-links .btn {
+    justify-content: center;
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 16px;
+}
+
+/* ===== Submit Loading & Paper Plane Animations ===== */
+.btn-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.8;
+}
+.btn-loading span {
+    opacity: 0;
+}
+.btn-loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spinner 0.6s linear infinite;
+}
+@keyframes spinner {
+    to { transform: rotate(360deg); }
+}
+
+/* Paper Plane flying effect */
+.btn-success-plane ion-icon {
+    animation: flyAway 1.2s ease-in-out forwards;
+}
+
+@keyframes flyAway {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    30% {
+        transform: translate(-10px, 10px) scale(0.9);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(150px, -150px) scale(0.5);
+        opacity: 0;
+    }
+}
