@@ -431,12 +431,67 @@ body.dark .gradient-sphere {
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     transition: all var(--transition-fast);
+    position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .card:hover {
     transform: translateY(-4px);
     border-color: rgba(var(--primary-rgb), 0.25);
     box-shadow: 0 20px 40px -10px rgba(var(--primary-rgb), 0.08);
+}
+
+/* 3D Depth Layers for Card Elements */
+.card > h3,
+.card > p,
+.card > div,
+.card > span,
+.card-icon,
+.skills-badge-list,
+.project-card-header,
+.project-year,
+.project-card-tech,
+.timeline-meta,
+.timeline-content,
+.intern-meta,
+.intern-content,
+.cert-header,
+.achieve-icon {
+    transform: translateZ(30px);
+    transition: transform var(--transition-fast);
+}
+
+/* Dynamic Glare Overlay */
+.card-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0) 65%
+    );
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 5;
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.dark .card-glare {
+    background: radial-gradient(
+        circle at var(--glare-x, 50%) var(--glare-y, 50%),
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0) 65%
+    );
+}
+
+.card:hover .card-glare {
+    opacity: 1;
 }
 
 /* ===== Section Header Helper ===== */
@@ -1238,6 +1293,66 @@ footer {
     transition-delay: 0.2s;
 }
 
+/* Mobile Menu Trigger styling */
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--card-border);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+    transition: all var(--transition-fast);
+    z-index: 101;
+}
+.menu-toggle:hover {
+    background-color: var(--card-border);
+}
+.menu-toggle .menu-close-icon {
+    display: none;
+}
+.menu-toggle.active .menu-open-icon {
+    display: none;
+}
+.menu-toggle.active .menu-close-icon {
+    display: block;
+}
+
+/* Staggered reveals CSS delay chain */
+.reveal-grid > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-grid.active > * {
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-grid.active > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-grid.active > *:nth-child(2) { transition-delay: 0.15s; }
+.reveal-grid.active > *:nth-child(3) { transition-delay: 0.25s; }
+.reveal-grid.active > *:nth-child(4) { transition-delay: 0.35s; }
+.reveal-grid.active > *:nth-child(5) { transition-delay: 0.45s; }
+.reveal-grid.active > *:nth-child(6) { transition-delay: 0.55s; }
+
+/* Input verification validation animations */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+.form-group input.input-error,
+.form-group textarea.input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1) !important;
+    animation: shake 0.4s ease;
+}
+
 /* ===== Responsive Styles (Media Queries) ===== */
 @media (max-width: 992px) {
     .about-grid {
@@ -1255,8 +1370,36 @@ footer {
         padding: 0;
     }
     
+    .menu-toggle {
+        display: flex;
+    }
+    
     .nav-links {
-        display: none; /* In a desktop-mobile setup, simple hidden tabs or compact menu. We can keep links hidden and actions visible. */
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background-color: var(--nav-bg);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+        padding: 40px 24px;
+        gap: 24px;
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+        border-bottom: 1px solid var(--nav-border);
+        overflow-y: auto;
+        z-index: 99;
+    }
+    
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .form-row {
