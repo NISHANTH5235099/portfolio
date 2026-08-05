@@ -13,11 +13,11 @@
     --transition-fast: 0.2s ease;
 
     /* Theme - Light (Default root overrides below) */
-    --bg-color: #f8fafc;
+    --bg-color: #f4f5f8;
     --text-color: #0f172a;
     --text-muted: #64748b;
     
-    --card-bg: rgba(255, 255, 255, 0.7);
+    --card-bg: rgba(255, 255, 255, 0.65);
     --card-border: rgba(15, 23, 42, 0.08);
     --card-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
     
@@ -26,39 +26,43 @@
     --secondary: #0ea5e9;
     --secondary-rgb: 14, 165, 233;
     --accent: #10b981;
+    --accent-rgb: 16, 185, 129;
     
     --gradient-hero: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%);
     --gradient-text: linear-gradient(to right, #4f46e5, #0ea5e9);
     
-    --nav-bg: rgba(248, 250, 252, 0.8);
+    --nav-bg: rgba(244, 245, 248, 0.8);
     --nav-border: rgba(15, 23, 42, 0.06);
     
-    --cursor-glow-bg: rgba(79, 70, 229, 0.1);
+    --cursor-glow-bg: rgba(79, 70, 229, 0.08);
+    --grid-line-color: rgba(79, 70, 229, 0.02);
 }
 
 /* Theme - Dark Mode */
 body.dark {
-    --bg-color: #0b0f19;
+    --bg-color: #05070c;
     --text-color: #f1f5f9;
     --text-muted: #94a3b8;
     
-    --card-bg: rgba(17, 24, 39, 0.65);
-    --card-border: rgba(255, 255, 255, 0.06);
-    --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    --card-bg: rgba(13, 17, 28, 0.5);
+    --card-border: rgba(255, 255, 255, 0.05);
+    --card-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
     
     --primary: #818cf8;
     --primary-rgb: 129, 140, 248;
     --secondary: #38bdf8;
     --secondary-rgb: 56, 189, 248;
     --accent: #34d399;
+    --accent-rgb: 52, 211, 153;
     
-    --gradient-hero: linear-gradient(135deg, #1e1b4b 0%, #082f49 100%);
+    --gradient-hero: linear-gradient(135deg, #090a16 0%, #040e1a 100%);
     --gradient-text: linear-gradient(to right, #a5b4fc, #38bdf8);
     
-    --nav-bg: rgba(11, 15, 25, 0.85);
-    --nav-border: rgba(255, 255, 255, 0.04);
+    --nav-bg: rgba(5, 7, 12, 0.85);
+    --nav-border: rgba(255, 255, 255, 0.03);
     
-    --cursor-glow-bg: rgba(129, 140, 248, 0.15);
+    --cursor-glow-bg: rgba(129, 140, 248, 0.12);
+    --grid-line-color: rgba(165, 180, 252, 0.012);
 }
 
 /* ===== Base Styles & Reset ===== */
@@ -76,6 +80,46 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     transition: background-color var(--transition-slow), color var(--transition-slow);
+    position: relative;
+}
+
+/* Page-wide premium background grid + ambient blur gradients */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(var(--primary-rgb), 0.05) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(var(--secondary-rgb), 0.05) 0%, transparent 45%),
+        linear-gradient(var(--grid-line-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line-color) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+    opacity: 0.95;
+    transition: background-image var(--transition-slow);
+}
+
+/* Page-wide premium SVG grain/noise texture overlay */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    transition: opacity var(--transition-slow);
+}
+
+body:not(.dark)::after {
+    opacity: 0.045;
 }
 
 .container {
@@ -136,6 +180,20 @@ section {
     transition: all var(--transition-fast);
 }
 
+/* Scroll progress indicator line dynamically updated via JS scroll listener */
+.scroll-progress {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 0%;
+    height: 3.5px;
+    background: var(--gradient-text);
+    z-index: 10;
+    box-shadow: 0 1.5px 8px rgba(var(--primary-rgb), 0.2);
+    pointer-events: none;
+    transition: width 0.08s ease;
+}
+
 .nav-container {
     display: flex;
     justify-content: space-between;
@@ -159,38 +217,51 @@ section {
 }
 
 .nav-links {
+    position: relative;
     display: flex;
-    gap: 32px;
+    gap: 12px;
+    align-items: center;
 }
 
 .nav-link {
     color: var(--text-muted);
     text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
+    font-weight: 600;
+    font-size: 14.5px;
     position: relative;
-    padding: 8px 0;
-    transition: color var(--transition-fast);
+    padding: 8px 16px;
+    border-radius: 20px;
+    z-index: 2;
+    transition: color 0.3s ease;
 }
 
 .nav-link:hover {
     color: var(--text-color);
 }
 
-.nav-link::after {
-    content: '';
+/* The sliding capsule indicator block */
+.nav-active-pill {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--primary);
-    transition: width var(--transition-fast);
+    height: 36px;
+    background-color: rgba(var(--primary-rgb), 0.08);
+    border: 1px solid rgba(var(--primary-rgb), 0.15);
+    border-radius: 20px;
+    z-index: 1;
+    pointer-events: none;
+    transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                width 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.25s ease,
+                transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    transform: scale(0.9);
 }
 
-.nav-link:hover::after {
-    width: 100%;
+body.dark .nav-active-pill {
+    background-color: rgba(var(--primary-rgb), 0.15);
+    border: 1px solid rgba(var(--primary-rgb), 0.25);
 }
+
+
 
 .nav-actions {
     display: flex;
@@ -299,6 +370,7 @@ body:not(.dark) .sun-icon {
     border-radius: 50%;
     filter: blur(80px);
     opacity: 0.15;
+    will-change: transform;
 }
 
 body.dark .gradient-sphere {
@@ -311,6 +383,7 @@ body.dark .gradient-sphere {
     background: var(--primary);
     top: 15%;
     right: 10%;
+    animation: float-sphere-1 22s infinite ease-in-out;
 }
 
 .sphere-2 {
@@ -319,6 +392,31 @@ body.dark .gradient-sphere {
     background: var(--secondary);
     bottom: 10%;
     left: 5%;
+    animation: float-sphere-2 28s infinite ease-in-out;
+}
+
+@keyframes float-sphere-1 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(-40px, 50px) scale(1.1);
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes float-sphere-2 {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(50px, -40px) scale(0.9);
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
 }
 
 .hero-content {
@@ -1111,32 +1209,70 @@ body:not(.dark) .achieve-icon {
 }
 
 .form-group {
+    position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    margin-top: 10px;
 }
 
 .form-group label {
-    font-size: 13px;
-    font-weight: 600;
+    position: absolute;
+    left: 16px;
+    top: 14px;
+    font-size: 14px;
+    font-weight: 500;
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    pointer-events: none;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), 
+                font-size 0.2s cubic-bezier(0.2, 0, 0, 1), 
+                color 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.2s ease,
+                padding 0.2s ease;
+    padding: 0 4px;
+    z-index: 1;
+}
+
+.form-group textarea ~ label {
+    top: 14px;
 }
 
 .form-group input, .form-group textarea {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.02);
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 14px 16px;
     color: var(--text-color);
     font-family: var(--font-primary);
     font-size: 15px;
-    transition: all var(--transition-fast);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+    z-index: 0;
+}
+
+/* Initially hide placeholders to prevent overlap with floating label */
+.form-group input::placeholder, 
+.form-group textarea::placeholder {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.form-group.focused input::placeholder, 
+.form-group.focused textarea::placeholder {
+    opacity: 0.45;
+}
+
+/* Floating behavior when focused or has value */
+.form-group.focused label,
+.form-group.has-val label {
+    transform: translateY(-23px) scale(0.85);
+    transform-origin: left top;
+    color: var(--primary);
+    background-color: var(--bg-color);
+    padding: 0 6px;
+    font-weight: 600;
 }
 
 body.dark .form-group input, body.dark .form-group textarea {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(255, 255, 255, 0.015);
 }
 
 .form-group input:focus, .form-group textarea:focus {
@@ -1452,9 +1588,6 @@ footer {
 .nav-link.active {
     color: var(--text-color) !important;
 }
-.nav-link.active::after {
-    width: 100% !important;
-}
 
 /* Make Project Cards Interactive */
 .project-card-v2 {
@@ -1720,9 +1853,13 @@ footer {
     to { transform: rotate(360deg); }
 }
 
-/* Paper Plane flying effect */
+/* Paper Plane flying effect (improved takeoff and recovery) */
+.btn-success-plane {
+    background-color: var(--accent) !important;
+    box-shadow: 0 4px 14px 0 rgba(var(--accent-rgb), 0.4) !important;
+}
 .btn-success-plane ion-icon {
-    animation: flyAway 1.2s ease-in-out forwards;
+    animation: flyAway 2.2s ease-in-out forwards;
 }
 
 @keyframes flyAway {
@@ -1730,12 +1867,93 @@ footer {
         transform: translate(0, 0) scale(1);
         opacity: 1;
     }
-    30% {
-        transform: translate(-10px, 10px) scale(0.9);
+    15% {
+        transform: translate(-10px, 5px) scale(0.9);
         opacity: 0.9;
     }
-    100% {
-        transform: translate(150px, -150px) scale(0.5);
+    40% {
+        transform: translate(80px, -40px) scale(0.7);
         opacity: 0;
     }
+    45% {
+        transform: translate(-40px, 20px) scale(0.1);
+        opacity: 0;
+    }
+    70% {
+        transform: translate(0, 0) scale(0.1);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* ===== Card Spotlight border glow (tactile hover) ===== */
+.card-border-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 4;
+    border: 1px solid transparent;
+    background: radial-gradient(
+        circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(var(--primary-rgb), 0.2),
+        transparent 80%
+    ) border-box;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) padding-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: 
+      linear-gradient(#fff 0 0) padding-box, 
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.dark .card-border-glow {
+    background: radial-gradient(
+        circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(var(--primary-rgb), 0.3),
+        transparent 80%
+    ) border-box;
+}
+
+.card:hover .card-border-glow {
+    opacity: 1;
+}
+
+/* ===== Color-coded Glowing Skill Badges ===== */
+.skill-badge {
+    transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.skill-badge.badge-frontend:hover {
+    background-color: rgba(var(--secondary-rgb), 0.08);
+    border-color: rgba(var(--secondary-rgb), 0.25);
+    color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(var(--secondary-rgb), 0.12);
+    transform: translateY(-3px) scale(1.04);
+}
+
+.skill-badge.badge-backend:hover {
+    background-color: rgba(var(--primary-rgb), 0.08);
+    border-color: rgba(var(--primary-rgb), 0.25);
+    color: var(--primary);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.12);
+    transform: translateY(-3px) scale(1.04);
+}
+
+.skill-badge.badge-tools:hover {
+    background-color: rgba(var(--accent-rgb), 0.08);
+    border-color: rgba(var(--accent-rgb), 0.25);
+    color: var(--accent);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.12);
+    transform: translateY(-3px) scale(1.04);
 }

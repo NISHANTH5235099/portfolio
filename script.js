@@ -196,23 +196,20 @@ document.addEventListener('DOMContentLoaded', () => {
     initStatsCounter();
     initProjectModals();
     initContactForm();
+    initSlidingNavPill();
+    initScrollProgress();
 });
 
-// 1. Hero Canvas Particles Background (Three.js WebGL Particle Wave with 2D Fallback)
+// 1. Hero Canvas Particles Background (Premium 2D Interactive Constellation Net)
 function initHeroParticles() {
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
     
-    // Check if Three.js is loaded, else run 2D canvas fallback
-    if (typeof THREE !== 'undefined') {
-        initThreeJSParticles(canvas);
-        return;
-    }
-    
-    // Fallback: 2D Canvas particles
     const ctx = canvas.getContext('2d');
     let particles = [];
-    let mouse = { x: null, y: null, radius: 130 };
+    let animationFrameId = null;
+    let mouse = { x: null, y: null, radius: 150 };
+    let isVisible = true;
     
     function resizeCanvas() {
         const parent = canvas.parentElement;
@@ -225,29 +222,34 @@ function initHeroParticles() {
         constructor() {
             this.x = Math.random() * canvas.width;
             this.y = Math.random() * canvas.height;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
+            this.vx = (Math.random() - 0.5) * 0.4;
+            this.vy = (Math.random() - 0.5) * 0.4;
             this.radius = Math.random() * 2 + 1;
+            this.baseAlpha = Math.random() * 0.4 + 0.15;
+            this.alpha = this.baseAlpha;
         }
         
         update() {
             this.x += this.vx;
             this.y += this.vy;
             
-            if (this.x < 0) this.x = canvas.width;
-            if (this.x > canvas.width) this.x = 0;
-            if (this.y < 0) this.y = canvas.height;
-            if (this.y > canvas.height) this.y = 0;
+            if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+            if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
             
             if (mouse.x !== null && mouse.y !== null) {
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
+                const dx = mouse.x - this.x;
+                const dy = mouse.y - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < mouse.radius) {
-                    let force = (mouse.radius - dist) / mouse.radius;
+                    const force = (mouse.radius - dist) / mouse.radius;
                     this.x -= (dx / dist) * force * 1.5;
                     this.y -= (dy / dist) * force * 1.5;
+                    this.alpha = Math.min(0.8, this.baseAlpha + force * 0.4);
+                } else {
+                    if (this.alpha > this.baseAlpha) this.alpha -= 0.01;
                 }
+            } else {
+                if (this.alpha > this.baseAlpha) this.alpha -= 0.01;
             }
         }
         
@@ -255,45 +257,85 @@ function initHeroParticles() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             const isDark = document.body.classList.contains('dark');
-            ctx.fillStyle = isDark ? 'rgba(165, 180, 252, 0.3)' : 'rgba(79, 70, 229, 0.2)';
+            if (isDark) {
+                ctx.fillStyle = `rgba(165, 180, 252, ${this.alpha})`;
+            } else {
+                ctx.fillStyle = `rgba(79, 70, 229, ${this.alpha})`;
+            }
             ctx.fill();
         }
     }
     
     function initParticles() {
         particles = [];
-        const count = Math.min(55, Math.floor((canvas.width * canvas.height) / 16000));
+        const area = canvas.width * canvas.height;
+        const count = Math.min(80, Math.floor(area / 15000));
         for (let i = 0; i < count; i++) {
             particles.push(new Particle());
         }
     }
     
     function animate() {
+        if (!isVisible) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         const isDark = document.body.classList.contains('dark');
-        const lineColor = isDark ? 'rgba(165, 180, 252, 0.04)' : 'rgba(79, 70, 229, 0.035)';
+        const lineColorPrefix = isDark ? 'rgba(165, 180, 252, ' : 'rgba(79, 70, 229, ';
+        const maxDist = 120;
         
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
             
             for (let j = i + 1; j < particles.length; j++) {
-                let dx = particles[i].x - particles[j].x;
-                let dy = particles[i].y - particles[j].y;
-                let dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 100) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < maxDist) {
+                    let alpha = (1 - dist / maxDist) * 0.12;
+                    
+                    if (mouse.x !== null && mouse.y !== null) {
+                        const mdx1 = mouse.x - particles[i].x;
+                        const mdy1 = mouse.y - particles[i].y;
+                        const mdist1 = Math.sqrt(mdx1 * mdx1 + mdy1 * mdy1);
+                        
+                        const mdx2 = mouse.x - particles[j].x;
+                        const mdy2 = mouse.y - particles[j].y;
+                        const mdist2 = Math.sqrt(mdx2 * mdx2 + mdy2 * mdy2);
+                        
+                        if (mdist1 < mouse.radius && mdist2 < mouse.radius) {
+                            alpha += 0.08;
+                        }
+                    }
+                    
                     ctx.beginPath();
-                    ctx.strokeStyle = lineColor;
-                    ctx.lineWidth = 1 - dist / 100;
+                    ctx.strokeStyle = lineColorPrefix + alpha + ')';
+                    ctx.lineWidth = (1 - dist / maxDist) * 0.8;
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
                     ctx.stroke();
                 }
             }
+            
+            if (mouse.x !== null && mouse.y !== null) {
+                const dx = mouse.x - particles[i].x;
+                const dy = mouse.y - particles[i].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < mouse.radius) {
+                    const alpha = (1 - dist / mouse.radius) * 0.15;
+                    ctx.beginPath();
+                    ctx.strokeStyle = lineColorPrefix + alpha + ')';
+                    ctx.lineWidth = (1 - dist / mouse.radius) * 1.0;
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
         }
         
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
     }
     
     window.addEventListener('resize', resizeCanvas);
@@ -312,207 +354,47 @@ function initHeroParticles() {
         });
     }
     
-    resizeCanvas();
-    animate();
-}
-
-function initThreeJSParticles(canvas) {
-    const heroSec = canvas.closest('.hero-sec');
-    if (!heroSec) return;
-
-    let width = heroSec.clientWidth;
-    let height = heroSec.clientHeight;
-
-    // Create Scene, Camera, Renderer
-    const scene = new THREE.Scene();
-    
-    const camera = new THREE.PerspectiveCamera(60, width / height, 1, 1000);
-    camera.position.set(0, 110, 180);
-    camera.lookAt(0, 0, 0);
-
-    const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        antialias: true,
-        alpha: true
-    });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(width, height);
-
-    // Dynamic wave parameters
-    const rows = 45;
-    const cols = 45;
-    const spacing = 16;
-    const particleCount = rows * cols;
-
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-
-    // Initial grid mapping (X, Z on flat plane)
-    let index = 0;
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            positions[index * 3] = (c - cols / 2) * spacing;     // x
-            positions[index * 3 + 1] = 0;                         // y
-            positions[index * 3 + 2] = (r - rows / 2) * spacing; // z
-            index++;
-        }
-    }
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    // Dynamic texture generation using 2D Canvas
-    function createCircleTexture() {
-        const texCanvas = document.createElement('canvas');
-        texCanvas.width = 16;
-        texCanvas.height = 16;
-        const ctx = texCanvas.getContext('2d');
-        const gradient = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
-        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, 16, 16);
-        return new THREE.CanvasTexture(texCanvas);
-    }
-
-    let isDark = document.body.classList.contains('dark');
-    let colorVal = isDark ? 0xa5b4fc : 0x4f46e5;
-
-    const material = new THREE.PointsMaterial({
-        color: colorVal,
-        size: 3.5,
-        map: createCircleTexture(),
-        transparent: true,
-        blending: isDark ? THREE.AdditiveBlending : THREE.NormalBlending,
-        depthWrite: false
-    });
-
-    const particleSystem = new THREE.Points(geometry, material);
-    scene.add(particleSystem);
-
-    // Interactive mouse mapping
-    let mouse = { x: null, z: null };
-    heroSec.addEventListener('mousemove', (e) => {
-        const rect = canvas.getBoundingClientRect();
-        const screenX = e.clientX - rect.left;
-        const screenY = e.clientY - rect.top;
-        
-        // Map screen space 2D coordinates to 3D grid bounds
-        mouse.x = ((screenX / rect.width) - 0.5) * (cols * spacing);
-        mouse.z = ((screenY / rect.height) - 0.5) * (rows * spacing);
-    });
-
-    heroSec.addEventListener('mouseleave', () => {
-        mouse.x = null;
-        mouse.z = null;
-    });
-
-    // Animate wave
-    let count = 0;
-    const speed = 0.02;
-
-    function render() {
-        count += speed;
-        const pos = geometry.attributes.position.array;
-        
-        // Update color and blending dynamically if theme changes
-        const currentIsDark = document.body.classList.contains('dark');
-        if (currentIsDark !== isDark) {
-            isDark = currentIsDark;
-            colorVal = isDark ? 0xa5b4fc : 0x4f46e5;
-            material.color.setHex(colorVal);
-            material.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
-            material.needsUpdate = true;
-        }
-
-        let idx = 0;
-        for (let r = 0; r < rows; r++) {
-            for (let c = 0; c < cols; c++) {
-                const xIndex = idx * 3;
-                const yIndex = idx * 3 + 1;
-                const zIndex = idx * 3 + 2;
-
-                const px = pos[xIndex];
-                const pz = pos[zIndex];
-
-                // Undulating waves based on sin/cos and distance
-                let yVal = Math.sin(c * 0.15 + count) * 15 +
-                           Math.cos(r * 0.15 + count) * 15;
-
-                // Mouse interaction repulsion/warp ripple
-                if (mouse.x !== null && mouse.z !== null) {
-                    const dx = mouse.x - px;
-                    const dz = mouse.z - pz;
-                    const dist = Math.sqrt(dx * dx + dz * dz);
-                    if (dist < 100) {
-                        const force = (100 - dist) / 100;
-                        yVal += force * Math.sin(count * 4) * 28;
-                    }
-                }
-
-                pos[yIndex] = yVal;
-                idx++;
-            }
-        }
-        geometry.attributes.position.needsUpdate = true;
-        
-        // Subtle global tilt rotations
-        particleSystem.rotation.y = count * 0.04;
-        
-        renderer.render(scene, camera);
-    }
-
-    // Resize Handler
-    function handleResize() {
-        width = heroSec.clientWidth;
-        height = heroSec.clientHeight;
-        camera.aspect = width / height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(width, height);
-    }
-    window.addEventListener('resize', handleResize);
-
-    // Optimized Animation loop via IntersectionObserver
-    let isVisible = true;
-    let frameId = null;
-
-    function animateLoop() {
-        if (!isVisible) return;
-        render();
-        frameId = requestAnimationFrame(animateLoop);
-    }
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            const wasVisible = isVisible;
             isVisible = entry.isIntersecting;
-            if (isVisible && !wasVisible) {
-                animateLoop();
-            } else if (!isVisible && wasVisible) {
-                cancelAnimationFrame(frameId);
+            if (isVisible) {
+                animate();
+            } else {
+                cancelAnimationFrame(animationFrameId);
             }
         });
     }, { threshold: 0.05 });
+    
     observer.observe(canvas);
-
-    // Start
-    animateLoop();
+    
+    resizeCanvas();
 }
 
-// Custom 3D Card Tilt Engine
+// Custom 3D Card Tilt & Spotlight Border Engine
 function init3DTilt() {
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
-        // Skip tilt on mobile device touchscreens
-        if (window.matchMedia('(max-width: 768px)').matches) return;
-        
         // Append glare overlay element
         const glare = document.createElement('div');
         glare.classList.add('card-glare');
         card.appendChild(glare);
+
+        // Append spotlight border overlay element
+        const borderGlow = document.createElement('div');
+        borderGlow.classList.add('card-border-glow');
+        card.appendChild(borderGlow);
         
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
+            
+            // Set local CSS variables for spotlight borders
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+            
+            // Skip 3D card tilt transformations on mobile devices
+            if (window.matchMedia('(max-width: 768px)').matches) return;
             
             const xc = rect.width / 2;
             const yc = rect.height / 2;
@@ -531,7 +413,9 @@ function init3DTilt() {
         });
         
         card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            if (!window.matchMedia('(max-width: 768px)').matches) {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            }
         });
     });
 }
@@ -566,6 +450,10 @@ function initScrollspy() {
                 link.classList.add('active');
             }
         });
+        
+        if (typeof window.syncActivePill === 'function') {
+            window.syncActivePill();
+        }
     });
 }
 
@@ -662,7 +550,7 @@ function initStatsCounter() {
     observer.observe(statsSec);
 }
 
-// 5. Project Pop-up Modals Integration
+// 5. Project Pop-up Modals Integration (with Focus Trap, a11y, and Click Propagation fix)
 function initProjectModals() {
     const modal = document.getElementById('project-modal');
     const modalContent = document.getElementById('modal-content');
@@ -671,6 +559,34 @@ function initProjectModals() {
     const projectCards = document.querySelectorAll('.project-card-v2');
     
     if (!modal || !modalContent) return;
+
+    let previousFocusedElement = null;
+    
+    // Focus Trap function for Accessibility
+    function trapFocus(e) {
+        if (e.key !== 'Tab') return;
+        
+        const focusables = modal.querySelectorAll('a[href], button:not([disabled]), textarea, input, [tabindex]:not([tabindex="-1"])');
+        if (focusables.length === 0) {
+            e.preventDefault();
+            return;
+        }
+        
+        const firstFocusable = focusables[0];
+        const lastFocusable = focusables[focusables.length - 1];
+        
+        if (e.shiftKey) { // Shift + Tab
+            if (document.activeElement === firstFocusable) {
+                lastFocusable.focus();
+                e.preventDefault();
+            }
+        } else { // Tab
+            if (document.activeElement === lastFocusable) {
+                firstFocusable.focus();
+                e.preventDefault();
+            }
+        }
+    }
     
     function openModal(projectId) {
         const project = projectDetails[projectId];
@@ -739,17 +655,43 @@ function initProjectModals() {
             </div>
         `;
         
+        // Save current focus for restoration
+        previousFocusedElement = document.activeElement;
+        
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
+        
+        // Bind focus trap listener
+        modal.addEventListener('keydown', trapFocus);
+        
+        // Focus close button initially
+        setTimeout(() => {
+            if (modalClose) modalClose.focus();
+        }, 80);
     }
     
     function closeModal() {
         modal.classList.remove('show');
         document.body.style.overflow = '';
+        modal.removeEventListener('keydown', trapFocus);
+        
+        // Restore focus
+        if (previousFocusedElement) {
+            previousFocusedElement.focus();
+        }
     }
     
     projectCards.forEach(card => {
         const projectId = card.getAttribute('data-project-id');
+        
+        // Stop click event propagation on card links (Fixes navigation overlap)
+        const cardLinks = card.querySelectorAll('.project-links a');
+        cardLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+        
         if (projectId) {
             card.addEventListener('click', () => {
                 openModal(projectId);
@@ -805,10 +747,36 @@ function initContactForm() {
         }, 4000);
     }
 
-    // Clear errors on input focus/type
+    // Handle floating labels state and clear errors on input focus/type
     [nameInput, emailInput, messageInput].forEach(input => {
+        const formGroup = input.closest('.form-group');
+        
+        // Initial sync on startup (e.g. autofilled values)
+        if (input.value.trim() !== '') {
+            formGroup.classList.add('has-val');
+        }
+        
+        input.addEventListener('focus', () => {
+            formGroup.classList.add('focused');
+            input.classList.remove('input-error');
+        });
+        
+        input.addEventListener('blur', () => {
+            formGroup.classList.remove('focused');
+            if (input.value.trim() !== '') {
+                formGroup.classList.add('has-val');
+            } else {
+                formGroup.classList.remove('has-val');
+            }
+        });
+        
         input.addEventListener('input', () => {
             input.classList.remove('input-error');
+            if (input.value.trim() !== '') {
+                formGroup.classList.add('has-val');
+            } else {
+                formGroup.classList.remove('has-val');
+            }
         });
     });
 
@@ -883,10 +851,14 @@ function initContactForm() {
             
             showToast('Message sent successfully!');
             
-            // Clear fields
-            nameInput.value = '';
-            emailInput.value = '';
-            messageInput.value = '';
+            // Clear fields and reset floating label states
+            [nameInput, emailInput, messageInput].forEach(input => {
+                input.value = '';
+                const formGroup = input.closest('.form-group');
+                if (formGroup) {
+                    formGroup.classList.remove('has-val', 'focused');
+                }
+            });
             
             setTimeout(() => {
                 submitBtn.classList.remove('btn-success-plane');
@@ -965,5 +937,70 @@ function initHeroParallax() {
     
     heroSec.addEventListener('mouseenter', () => {
         textCard.style.transition = 'none';
+    });
+}
+
+// 7. Dynamic Sliding Navigation Capsule Highlight
+function initSlidingNavPill() {
+    const navLinksContainer = document.querySelector('.nav-links');
+    if (!navLinksContainer) return;
+    
+    // Create pill element dynamically
+    const pill = document.createElement('div');
+    pill.classList.add('nav-active-pill');
+    navLinksContainer.appendChild(pill);
+    
+    const links = navLinksContainer.querySelectorAll('.nav-link');
+    
+    function movePillTo(element) {
+        if (element && element.offsetWidth > 0) {
+            pill.style.left = `${element.offsetLeft}px`;
+            pill.style.width = `${element.offsetWidth}px`;
+            pill.style.opacity = '1';
+            pill.style.transform = 'scale(1)';
+        } else {
+            pill.style.opacity = '0';
+            pill.style.transform = 'scale(0.9)';
+        }
+    }
+    
+    function syncActivePill() {
+        const activeLink = navLinksContainer.querySelector('.nav-link.active');
+        movePillTo(activeLink);
+    }
+    
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            movePillTo(link);
+        });
+    });
+    
+    navLinksContainer.addEventListener('mouseleave', () => {
+        syncActivePill();
+    });
+    
+    window.addEventListener('resize', syncActivePill);
+    
+    // Expose sync function globally
+    window.syncActivePill = syncActivePill;
+    
+    // Initial alignment delay to allow rendering dimensions to stabilize
+    setTimeout(syncActivePill, 250);
+}
+
+// 8. Dynamic Scroll Progress Bar Integration
+function initScrollProgress() {
+    const progressBar = document.getElementById('scroll-progress');
+    if (!progressBar) return;
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight > 0) {
+            const percent = (scrollTop / docHeight) * 100;
+            progressBar.style.width = `${percent}%`;
+        } else {
+            progressBar.style.width = '0%';
+        }
     });
 }
